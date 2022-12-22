@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style type="text/css">
+		@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+		
+		body {
+			background-color: #f3f8fa;
+			font-family: 'Inter', 'sans-serif';
+			color: #103143;
+			height: 100vh;
+			margin-left: 5rem;
+		}
+		
+		.like-btn {
+			background-color: #bbefeb;
+			border: 0;
+			padding: .85rem 1.75rem .85rem 1.75rem;
+			border-radius: 30px;
+			margin-bottom: 3rem;
+		}
+		
+		.search-btn {
+			background-color: #bbefeb;
+			border: 0;
+			padding: .85rem 1.75rem .85rem 1.75rem;
+			border-radius: 30px;
+			margin-bottom: 3rem;
+			margin-left: 1rem;
+		}
+		
+		.article {
+			margin-bottom: 3rem;
+		}
+
+	</style>
+</head>
+<body>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.form').submit(function() {
+				var form = $(this);
+				// posts our form's fields to addrestaurant
+				$.post("/likearticle", form.serialize())
+				.fail(function() {
+					alert("error with ajax call");
+				})
+				.done(function() {
+					console.log("ajax call made");
+				});
+				return false;
+			});
+		});
+	</script>
+	<h1></h1>
+	<h1>News Feed for <%= username %></h1>
+	
+	<a href="/homepage" class = "btn btn-info">Homepage</a>
+    <br>
+    
+    <div>Search for an article:</div>
+    <form action="/newssearch" method="post">
+    	<input type="text" name="search">
+    	<input type="submit" class="search-btn" value="Search">
+    </form>
+    <br>
+	
+	<% for (let i = 0; i < articles.length; i++) { %>
+		<div class="article">
+		    <h2>
+			   	<a href='<%= articles[i].url.S %>'>
+			   		<%= articles[i].headline.S %>
+			   	</a>
+		    </h2>
+		    <p><b>Author(s): <%= articles[i].authors.S %></b></p>
+		    <p><%= articles[i].description.S %></p>
+		    <form class="form" method="post">
+		    	<input type="hidden" name="username" value ="username">
+		    	<input type="hidden" name="url" value ="<%= articles[i].url.S %>">
+		    	<button class="like-btn" type="submit">Like</button>
+		    </form>
+	    </div>
+	<% } %>
+	
+	<script>
+		var buttons = document.getElementsByClassName('like-btn');
+		for (var i = 0; i < buttons.length; i++) {
+			buttons[i].addEventListener('click', function() {
+				this.style.color = 'blue';
+			});
+		}
+	</script>
+	
+</body>
+</html>

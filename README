@@ -1,0 +1,73 @@
+Full names:
+Kevin Hu
+Kristie Xia
+Geshi Yeung
+Sylvia Zhao
+
+SEAS logins:
+kevinhu
+krystiex
+geshi
+syzhao
+
+We declare that all code has been personally written by
+the group, and no code is copied from the Internet or other classmates.
+
+Features implemented:
+	User registration
+	Account changes
+	Walls
+	Home page
+	Commenting
+	Search for other users
+	Adding and removing friends
+	Visualizing friend connections
+	Dynamic refresh of home page
+	Chats and group chats
+	News feed
+	Search for news articles
+	Adsorption algorithm for article recommendations
+
+Extra credit tasks:
+	None
+
+List of source files included:
+	app.js
+	models/
+		database.js
+	routes/
+		routes.js
+	views/
+		account.ejs
+		allChats.ejs
+		friendvisualizer.ejs
+		homepage.ejs
+		main.ejs
+		newsfeed.ejs
+		newssearch.ejs
+		results.ejs
+		signup.ejs
+		singleChat.ejs
+		wall.ejs
+	newsfeed/src/main/java/edu/upenn/cis/nets2120/hw1/
+		AdsorptionJob.java
+		AdsorptionLivy.java
+		IndexArticle.java
+		LoadData.java
+		
+Instructions for running the code:
+
+	To populate the articles and inverted_articles tables,
+	cd to newsfeed and run "mvn exec:java@loader"
+
+	To run an adsorption job to populate the recommendations and
+	article_weights tables, cd to newsfeed and run "mvn compile", 
+	"mvn package" and "mvn exec:java@livy". Make sure to use a valid URI in 
+	AdsorptionLivy.java to submit the job.
+
+	Install dependencies through "npm install".
+	
+	Run "node app.js" in the home directory to run the app. If deploying
+	locally (not on EC2), go to app.js and change the port number in
+	http.listen() to 8080. Also go the allChats.ejs and singleChat.ejs
+	views to change the ec2 urls used for socket.io to http://localhost:8080/.

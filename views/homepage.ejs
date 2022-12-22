@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+var friendList = <%- JSON.stringify(friendList) %>;
+
+function getActive() {
+		//console.log('Getting active!');
+		//get restaurant info
+		if (friendList != null) {
+			for (let i = 0; i< friendList.length; i++) {
+
+			   //change this to getting active status then setting innerHTML
+			   var dataInput = {'username': friendList[i]};
+			   
+			   $.ajax({
+		        type: 'post',
+			    url: '/getactive',   
+			    data: dataInput,
+			    xhrFields: {
+			        withCredentials: false
+			    },  
+			    headers: {
+			    }, 
+			    success: function (data) {
+
+			        if (data.Active != null) {
+
+			      		if (data.Active.S == '1'){
+			      			document.getElementById(friendList[i]).innerHTML = "Online";
+			      			document.getElementById(friendList[i]).style.color = "green";
+			      		} else {
+			      			document.getElementById(friendList[i]).innerHTML = "Offline";
+			      			document.getElementById(friendList[i]).style.color = "red";
+			   
+			      		}
+			            
+			        } else {
+
+			            document.getElementById(friendList[i]).innerHTML = "No active status";
+			        }
+			     
+			    
+			       
+			    },  
+			    error: function () {
+			        console.log('Unable to get active status');
+			    }
+		    });
+			   
+			   
+			   
+			   
+			}
+		}
+		setTimeout(getActive, 2000);
+
+}
+
+</script>
+
+	<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style type="text/css">
+		@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+		
+		body {
+			background-color: #f3f8fa;
+			font-family: 'Inter', 'sans-serif';
+			color: #103143;
+			height: 100vh;
+		}
+		
+		.homepage-wrap {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+		
+		.nav-bar {
+			display: flex;
+			flex-direction: row;
+			align-items: center;5
+			justify-content: center;
+			margin-top: 2rem;
+			margin-bottom: 3rem;
+			background: white;
+			border-radius: 20px; 
+			border: solid;
+			border-width: 1px;
+			border-color: #efefef;	
+			filter: drop-shadow(0px 1px 4px #dfdfdf);	
+			padding: 1rem 3rem 1rem 3rem;
+		}
+		
+		.nav-btn {
+			background-color: white;
+			border: solid;
+			border-width: 1px;
+			border-color: #103143;
+			padding: .85rem 1.75rem .85rem 1.75rem;
+			border-radius: 30px;
+			margin-right: 2rem;
+			color: #103143;
+			font-weight: 500;
+		}
+		
+		.nav-btn-r {
+			color: #103143;
+			background-color: white;
+			border: solid;
+			border-width: 1px;
+			border-color: #103143;
+			padding: .85rem 1.75rem .85rem 1.75rem;
+			border-radius: 30px;
+			font-weight: 500;
+		}
+		
+		.submit-btn {
+			background-color: #bbefeb;
+			border: 0;
+			padding: .85rem 1.75rem .85rem 1.75rem;
+			border-radius: 30px;
+			margin-top: 1rem;
+		}
+		
+		.confirm-btn {
+			background-color: #bbefeb;
+			border: 0;
+			padding: .85rem 1.75rem .85rem 1.75rem;
+			border-radius: 30px;
+			margin-left: 1rem;
+		}
+		
+		input:focus {
+			outline: none !important;
+		}
+		
+		.homepage-flex {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+		
+		.user-search {
+			margin: 5rem 0 5rem 0;
+			
+		}
+		
+		.post-box {
+			display: flex;
+			flex-direction: column;
+			padding: 3.5rem 5rem 3.5rem 5rem;;
+			background-color: white;
+			border-radius: 20px; 
+			border: solid;
+			border-width: 1px;
+			border-color: #efefef;	
+			filter: drop-shadow(0px 1px 4px #dfdfdf);	
+			margin-bottom: 3rem;
+		}
+		
+		.post-header {
+			font-weight: 500;
+			font-size: 1.75rem;
+		}
+		
+		.post-content {
+			margin: 1rem 0 1rem 0;
+		}
+		
+		.post-time {
+			color: #aaaaaa;
+			margin-bottom: 3rem;
+		}
+		
+		.section-header {
+			font-size: 2rem;
+			font-weight: 500;
+			margin-bottom: 1rem;
+			margin-top: 3rem;
+		}
+		
+		.matching-users {
+			margin-bottom: 2rem;
+		}
+		
+		h1 {
+			margin-bottom: 2rem;
+		}
+		
+		.friends {
+			display: flex;
+			flex-direction: column;
+			padding: 3.5rem 5rem 3.5rem 5rem;;
+			background-color: white;
+			border-radius: 20px; 
+			border: solid;
+			border-width: 1px;
+			border-color: #efefef;	
+			filter: drop-shadow(0px 1px 4px #dfdfdf);	
+			margin: 5rem 0 5rem 0;
+		}
+		.posts {
+max-width: 300px;
+			background: yellow;
+			border-radius: 20px ; 
+		}
+		.friends .form-control {
+			margin-bottom: 10px;
+		}
+		.friend-container{
+			display: flex;
+			flex-direction: column;
+			margin: 2rem 0 2rem 0;
+		}
+		
+		.form-row {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+		}
+		
+		.add-label {
+			margin-right: 1rem;
+		}
+		
+		
+	</style>
+</head>
+<html>
+
+<body onload = "getActive()">
+ <script>
+  document.addEventListener("DOMContentLoaded", function (event) {
+    var scrollpos = localStorage.getItem("scrollpos");
+    if (scrollpos) window.scrollTo(0, scrollpos);
+  });
+
+  window.onscroll = function (e) {
+    localStorage.setItem("scrollpos", window.scrollY);
+  };
+    </script>
+    <div class="homepage-wrap">
+  <div class="nav-bar">
+    <a href="/wall?username=<%= username%>" class="nav-btn"> My Wall</a>
+  
+  <a href="/newsfeed" class="nav-btn">Newsfeed</a>
+  
+  
+  <div class="chats">
+    <a href="/allchats" class="nav-btn">My Chats</a>
+  </div>
+  
+	  <form action="/friends" method="get">
+	  <input type="submit" value="Friends Visualizer" class="nav-btn">
+	  </form>
+	  
+	
+	
+	<a href="/account" id="accountChange" class="nav-btn">Account Change</a>
+	
+	
+	<form action="/logout" method="post" name="logout">
+	  <input type="submit" value="Log Out" class="nav-btn-r">
+	</form>
+ </div>
+  <div class="homepage-flex">
+ 
+  <h1>Homepage for <%= username %></h1>
+  
+   <div class = "friend-container">
+  <div class="section-header">All friends:</div>
+  <%if (friendList != null) { %>
+  	<% for (const foo of friendList) { %>
+		<div >
+		<a href="/wall?username=<%= foo%>"> <%= foo %></a>
+		</div> 
+		<div id = "<%= foo%>"></div> <br>
+		
+	<% } %>
+  <% } %>
+  </div>
+ 
+  <div class="section-header">User Search </div>
+	<div>
+	   <input type="text" id="search" tabindex="0">
+	</div>
+	<ul id="searchResult"></ul>
+	
+	<script type="text/javascript">
+
+	$(document).ready(() => {
+
+	    $("#search").keyup(function(){
+	        var search = $(this).val().toLowerCase();
+
+	        var formData = {
+		     				search: search
+		     			};
+			console.log("Searching: " + search);
+	        if(search != ""){
+				$.ajax({
+					type: "post",
+					url: "/getSuggestions",
+					data: formData,
+					success: function(data) {
+						if (data.suggestions.length > 0) {
+							document.getElementById('searchResults').innerHTML = data.suggestions;
+						} else {
+							document.getElementById('searchResults').innerHTML = "No matching users.";
+						}
+					},
+					error: function(xhr, status, error) {
+						alert("Error encountered: " + error);
+					}
+				});
+	            
+	
+			} else {
+				document.getElementById('searchResults').innerHTML = "No matching users.";
+					
+			}
+		});
+		
+	});
+	</script>
+	<div class="matching-users">
+	<b>List of users matching search:</b> <div id="searchResults">No matching users.</div>
+	</div>
+  </div>
+  
+  <form action="/postStatusUpdate" class="container-fluid" method="post">
+  
+  <div class="status-form">
+    <div class="section-header">Post Status Update</div>
+    <input type="text" class="form-control" name="statusUpdate">
+    <input id="DateTime" name="DateTime" type="hidden" value="">
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+		
+		<script type="text/javascript">
+		  $(document).ready(function(){
+		    var today = moment().format('YYYY-MM-DD HH:mm:ss');
+		    $('#DateTime').val(today);
+		  });
+		</script>
+		
+		<input id="postID" name="postID" type="hidden" value="">
+
+		<script type="text/javascript">
+		  $(document).ready(function(){
+		    var id = "id" + Date.now().toString(36) + Math.random().toString(36).substr(2);;
+		    $('#postID').val(id);
+		  });
+		</script>
+  
+
+	<button type="submit" class="submit-btn">Post</button>
+
+  </form>
+  
+  <div class="friends">
+	<form action="/addfriend" method="post" name="addFriend">
+	<div class="form-row">
+  	<label class="add-label" for="uname">Add friend (enter username):</label>
+    <input type="text" name="username" required>
+    
+    <input class="add-input" id="AddFriendPostID" name="postID" type="hidden" value="">
+
+		<script type="text/javascript">
+		  $(document).ready(function(){
+		    var id = "id" + Date.now().toString(36) + Math.random().toString(36).substr(2);;
+		    $('#AddFriendPostID').val(id);
+		  });
+		</script>
+		
+    <input id="DateTime_AddFriend" name="DateTime" type="hidden" value="">
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+		
+		<script type="text/javascript">
+		  $(document).ready(function(){
+		    var today = moment().format('YYYY-MM-DD HH:mm:ss');
+		    $('#DateTime_AddFriend').val(today);
+		  });
+		</script>
+    <input type="submit" value="Confirm" class="confirm-btn">
+ 	</div>
+  </form>
+  
+  <%if (error) { %>
+     <%if (error == 1) { %>
+     <p style="color:red">You are already friends!</p>
+
+  	 <% } %>
+  	 <%if (error == 2) { %>
+     <p style="color:red">User not found</p>
+  	 <% } %>
+  	 <%if (error == 3) { %>
+     <p style="color:red">You cannot add yourself as friend</p>
+  	 <% } %>
+  <% } %>
+   
+  
+</div>
+</div>
+
+<div class="section-header">Status & Posts Feed</div>
+<% for (const foo of postsByPostee) { %>
+<div class="post-box">
+<div class="post-header">
+<%= foo.poster.S %> posted on <%= foo.postee.S %>'s wall: 
+</div>
+<div class="post-content">
+<%= foo.content.S %>
+</div>
+<div class="post-time">
+Posted at <%= foo.timestamp.S %>
+</div>
+<% if (foo.comments[0] != null) { %>
+	<% if (foo.comments[0].length > 0) {%>
+		<% for (const com of foo.comments[0]) { %>
+			<%= com.poster.S %> commented <%= com.comment.S %> at <%= com.timestamp.S %> <br>
+		<% } %>
+	<% } %>
+<% } %>
+
+  <form action="/comment?wall=No" class="container-fluid" method="post">
+  
+  <div class="form-group">
+    <label>Write a comment:</label>
+    <input type="text" class="form-control" name="comment">
+    <input id="<%= foo.postID.S %>" name="postID" type="hidden" value="">
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+		
+		<script type="text/javascript">
+		  $(document).ready(function(){
+		    $('#<%= foo.postID.S %>').val("<%= foo.postID.S %>");
+		  });
+		</script>
+    <input id="DateTime_<%= foo.postID.S %>" name="DateTime" type="hidden" value="">
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+		
+		<script type="text/javascript">
+		  $(document).ready(function(){
+		    var today = moment().format('YYYY-MM-DD HH:mm:ss');
+		    $('#DateTime_<%= foo.postID.S %>').val(today);
+		  });
+		</script>
+		
+  </div>
+  
+
+	<button type="submit" class="submit-btn">Comment</button>
+
+  </form> <br>
+
+</div>
+<% } %>
+  
+  </div>
+  </div>
+  
+ <script>
+ logout.onsubmit = function() {
+    localStorage.setItem("scrollpos", 0);}
+   
+  addFriend.onsubmit = function() {
+    localStorage.setItem("scrollpos", 0);}
+    
+   window.user_button = document.querySelector('#accountChange')
+user_button.addEventListener('click', ()=>{
+    localStorage.setItem("scrollpos", 0);      
+})
+ </script>
+
+
+
+</body>
+</html>

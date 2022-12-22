@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style type="text/css">
+		@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+		
+		body {
+			background-color: #f3f8fa;
+			font-family: 'Inter', 'sans-serif';
+			color: #103143;
+			height: 100vh;
+			display: flex;
+			justify-content: center;
+		}
+		
+		input:focus {
+			outline: none !important;
+		}
+		
+		.login-wrap {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+		
+		.login-header {
+			font-weight: 500;
+			font-size: 2rem;
+			text-align: left;
+			align-self: left;
+			margin-bottom: 1.5rem;
+		}
+		
+		.login-box {
+			margin-top: 15rem;
+			display: flex;
+			flex-direction: column;
+			padding: 3.5rem 5rem 3.5rem 5rem;;
+			background: white;
+			border-radius: 20px; 
+			border: solid;
+			border-width: 1px;
+			border-color: #efefef;	
+			filter: drop-shadow(0px 1px 4px #dfdfdf);		
+		}
+		
+		.form-box {
+			display: flex;
+			flex-direction: column;
+		}
+		
+		label {
+			font-weight: 400;
+			font-size: 1.35rem;
+		}
+		
+		.login-btn {
+			background-color: #bbefeb;
+			border: 0;
+			padding: .85rem 1.75rem .85rem 1.75rem;
+			border-radius: 30px;
+			margin-bottom: 3rem;
+		}
+		
+		.text-input {
+			margin-bottom: 1.5rem;
+			border-radius: 5px;
+			border: solid;
+			border-width: 1px;
+			border-color: #d6d6d6;
+			background-color: #fcfcfc;
+			height: 2.85rem;
+			padding: 0 0 0 .5rem;
+		}
+		
+		.login-footer {
+			margin-top: auto;
+			margin-bottom: 3rem;
+			font-weight: 500;
+			color: #aaaaaa;
+		}
+		
+		a {
+			color: #5abfb7;
+			text-decoration: underline;
+			font-weight: 500;
+			align-self: center;
+			text-align: center;
+		}
+		
+		/*.gradient-custom {
+		background: #6a11cb;
+		background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+		background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1))
+		}*/
+	</style>
+</head>
+
+<body>
+  <div class="login-wrap">  
+  <div class="login-box">
+    <div class="login-header">Login</div>
+  <form class="form-box" action="/checklogin" method="post">
+  	<label for="uname">Username</label>
+    <input class="text-input" type="text" name="username">
+    
+    <label for="psw">Password</label>
+    <input class="text-input" type="text" name="password">
+    
+    <input type="submit" value="Login" class="login-btn">
+  </form>
+  
+    <%if (error) { %>
+     <%if (error == 1) { %>
+     <font color="red">Log in failed<p>
+  	 <% } %>
+  	 <%if (error == 2) { %>
+     <font color="red">Account creation failed<p>
+  	 <% } %>
+  <% } %>
+  
+  <a href="/signup">Sign Up</a>
+ </div>
+  
+  <div class="login-footer">    
+    Group 21
+  </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="http://35.171.157.220/socket.io/socket.io.js"></script>
+	<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style type="text/css">
+		@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+		
+		body {
+			background-color: #f3f8fa;
+			font-family: 'Inter', 'sans-serif';
+			color: #103143;
+			display: flex;
+			height: 100vh;			
+		}
+		
+		main {
+			display: flex;
+			flex: 1;			
+		}
+		
+		.invite-wrap {
+			display: flex;
+			flex-direction: column;
+			flex-grow: 1;	
+			align-items: center;		
+		}
+		
+		.invite-header {
+			font-weight: 500;
+			font-size: 2rem;
+			text-align: left;
+			align-self: left;
+			margin-bottom: 1.5rem;
+		}
+		
+		.invite-box {
+			margin-top: 10rem;
+			margin-bottom: 3rem;
+			display: flex;
+			flex-direction: column;
+			padding: 3.5rem 5rem 3.5rem 5rem;;
+			background: white;
+			border-radius: 20px; 
+			border: solid;
+			border-width: 1px;
+			border-color: #efefef;	
+			filter: drop-shadow(0px 1px 4px #dfdfdf);	
+		}
+		
+		.invite-form {
+			display: flex;
+			flex-direction: column;
+		}
+		
+		label {
+			font-weight: 400;
+			font-size: 1.35rem;
+		}
+		
+		.invite-btn {
+			background-color: #bbefeb;
+			border: 0;
+			padding: .85rem 1.75rem .85rem 1.75rem;
+			border-radius: 30px;
+		}
+		
+		.text-input {
+			margin-bottom: 1.5rem;
+			border-radius: 5px;
+			border: solid;
+			border-width: 1px;
+			border-color: #d6d6d6;
+			background-color: #fcfcfc;
+			height: 2.85rem;
+			padding: 0 0 0 .5rem;
+		}
+		
+		.err-message {
+			margin-top: 1.5rem;
+			color: red;
+		}
+		
+		.chat-header {
+			font-size: 1.75rem;
+			font-weight: 500;
+		}
+		
+		a {
+			color: #5abfb7;
+			text-decoration: underline;
+			font-weight: 500;
+			align-self: center;
+			text-align: center;
+			margin-bottom: 3rem;
+		}
+	</style>
+	<script type="text/javascript">
+		  var socket = io();
+		  var currUser;
+		  var sender;
+		  
+		  async function joinChat(inviteSender) {		  	
+			await $.post("/invitechat", {
+				username: inviteSender
+			});
+			
+			// delete notif (currUser is invitee)
+			/*await $.post("/deletenotif", {
+				sender: inviteSender
+			});*/
+			
+			window.location = "/singlechat";
+		  }
+		  
+		  async function notifications() {
+		    // current chatID
+			await $.get("/curruser", function(data, err) {
+				currUser = data;
+			});
+		    	
+		   	socket.emit('notifications', { 
+				room: currUser
+			});
+			
+			// query chat_invites db for all notifications sent to currUser
+			var allNotifs;
+			
+			await $.get("/chatnotifs", function(data, err) {
+				allNotifs = data;
+			});
+						
+			for (var i = 0; i < allNotifs.length; i++) {
+				var notifTemp = document.createElement("li");
+		        var inviteLink = document.createElement("input");
+		        
+		        inviteLink.setAttribute("type", "button");
+		        
+		        inviteLink.setAttribute("onClick", "joinChat(this.id)");
+		        sender = allNotifs[i].sender.S;
+		        inviteLink.id = allNotifs[i].sender.S;
+		        
+		        inviteLink.setAttribute("value", "Chat with " + allNotifs[i].sender.S);
+		        
+		        //var buttonText = document.createTextNode(notif.sender);
+		        //inviteLink.innerHTML = notif.sender;
+		        //inviteLink.setAttribute("id", notif.chatID);
+		        //inviteLink.appendChild(buttonText);
+		        
+		      	notifTemp.appendChild(inviteLink);
+		      	
+		      	
+		      	$('#notifs').append(notifTemp);
+			}
+		  }
+    
+		  async function invite() {
+			event.preventDefault(); // prevent default submission behavior
+			
+			await $.post("/invitechat", {
+				username: $('#username-input').val(),
+			}, function(data, err) {
+		       // join the other user's room
+		      /* var otherUser = $('#username-input').val();
+		         alert("socket: " + socket);
+		       
+		        socket.emit('notifications', { 
+		          room: "test2"
+		        });
+		        
+		        
+		        alert("joined other user's room");
+		        alert("inviting: " + $('#username-input').val());
+		        alert("invited by: " + currUser);
+		        
+		       socket.emit('chat invite', { 
+		          invitee: "test2",
+		          sender: currUser
+		        });
+		        
+		       alert("invite emitted");*/
+		        
+		       // window.location = "/singlechat";
+			});
+						
+			var inviteErr;
+			   await $.get("/inviteerr", function(data2, err) {
+					inviteErr = data2;
+			   });
+			   
+			if (inviteErr == "None") {
+				window.location = "/singlechat";
+			} else {
+				window.location = "/allchats";
+			}
+			// where does it join a room with socket
+		};
+		
+		socket.on("connect", function () {
+		      socket.on('chat invite', function (notif) {		     
+		      	var notifTemp = document.createElement("li");
+		        var inviteLink = document.createElement("input");
+		        
+		        inviteLink.setAttribute("type", "button");
+		        
+		        inviteLink.setAttribute("onClick", "joinChat(this.id)");
+		        sender = notif.sender;
+		        
+		        inviteLink.setAttribute("value", "Chat with " + notif.sender);
+		        inviteLink.id = notif.sender;
+		        
+		        //var buttonText = document.createTextNode(notif.sender);
+		        //inviteLink.innerHTML = notif.sender;
+		        //inviteLink.setAttribute("id", notif.chatID);
+		        //inviteLink.appendChild(buttonText);
+		        
+		      	notifTemp.appendChild(inviteLink);
+		      	
+		      	$('#notifs').append(notifTemp);
+		      	//alert("appended to messages");
+		      	/*$('#notifs').animate({
+		      	  scrollTop: $('#notifs').get(0).scrollHeight
+		      	}, 0);*/
+		      	
+		      });
+	      });
+		
+		$(document).ready(function () { 
+			// set up socket for notifications   	
+	    	notifications();
+	    });
+	</script>
+</head>
+
+<body>
+  <div class="invite-wrap">
+  <div class="invite-box">
+  	<div class="invite-header">Invite to chat</div>
+    <form class="invite-form" action="" method="" onSubmit="return false">
+  	<label for="uname">Username</label>
+    <input class="text-input" type="text" name="username" id="username-input">
+    <input class="invite-btn" type="submit" value="Invite to Chat" onClick="invite()">
+  </form>
+  	 <%if (error != null && error != "None") { %>
+     	<div class="err-message"><%= error %></div>
+  	 <% } %>
+  </div>
+    <a href="/homepage">Back to homepage</a>
+  
+    <div class="chat-header">My Chats & Invites</div>
+  	<ul id="notifs"></ul>
+  </div>
+</body>
+</html>

@@ -1,0 +1,11 @@
+edu/upenn/cis/nets2120/hw1/AdsorptionLivy.class
+edu/upenn/cis/nets2120/storage/DynamoConnector.class
+edu/upenn/cis/nets2120/storage/DynamoConnector$LocalServer.class
+edu/upenn/cis/nets2120/storage/SparkConnector.class
+edu/upenn/cis/nets2120/hw1/IndexArticle.class
+edu/upenn/cis/nets2120/config/Config.class
+edu/upenn/cis/nets2120/hw1/LoadData.class
+edu/upenn/cis/nets2120/hw1/QueryForWord.class
+edu/upenn/cis/nets2120/hw1/files/TedTalkParser.class
+edu/upenn/cis/nets2120/hw1/files/TedTalkParser$TalkDescriptionHandler.class
+edu/upenn/cis/nets2120/hw1/AdsorptionJob.class
